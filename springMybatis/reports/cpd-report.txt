@@ -1,0 +1,11 @@
+Found a 7 line (36 tokens) duplication in the following files: 
+Starting at line 9 of D:\Dev\workspace\통합구현시험\bookRent\src\main\java\com\dbal\app\emp\mapper\EmpMapper.java
+Starting at line 10 of D:\Dev\workspace\통합구현시험\bookRent\src\main\java\com\dbal\app\emp\service\EmpService.java
+
+public interface EmpMapper {
+
+	public EmpVO getEmp(EmpVO empVO);
+	public void bookInsert(EmpVO empVO);
+	public List<EmpVO> getBookList(EmpVO empVO);	
+	public List<EmpVO> checkStatus(EmpVO empVO);	
+}

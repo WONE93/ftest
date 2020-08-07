@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dbal.app.emp.mapper.EmpMapper">
+
+<!-- 단건조회  -->
+<select id="getEmp" parameterType="EmpVO" resultType="EmpVO">     
+	SELECT  employee_id,
+	        first_name,
+			last_name,
+			email,
+			hire_date,
+			job_id,
+			salary
+	FROM employees
+	WHERE employee_id = #{employeeId}
+</select>
+
+<insert id="bookInsert" parameterType="EmpVO">  
+	insert into BOOK_TBL_06 
+				(BOOK_NO, 
+				BOOK_NAME, 
+				BOOK_COVERIMG, 
+				BOOK_DATE, 
+				BOOK_PRICE, 
+				BOOK_PUBLISHER, 
+				BOOK_INFO) 
+		values(
+				(SELECT NVL(max(BOOK_NO), 0)+1 FROM BOOK_TBL_06 ), 
+				#{bookName}, 
+				#{bookCovering}, 
+				#{bookDate}, 
+				#{bookPrice}, 
+				#{bookPublisher}, 
+				#{bookInfo})
+</insert>
+
+<select id="getBookList" parameterType="EmpVO" resultType="EmpVO">
+	select BOOK_NO ,
+		   BOOK_NAME,
+		   BOOK_COVERIMG,
+		   to_char(BOOK_DATE,'yyyy/dd/mm') "bookDate",
+	     TO_CHAR( BOOK_PRICE,'999,999,999,999,999') "bookPrice",
+		   BOOK_PUBLISHER,
+		   BOOK_INFO
+	FROM BOOK_TBL_06 
+</select>
+
+<select id="checkStatus" parameterType="EmpVO" resultType="EmpVO">
+select b.BOOK_NO,
+	   b.BOOK_NAME,
+	   SUM(r.RENT_PRICE) "rentPrice",
+	   SUM(r.RENT_STATUS) "rentStatus"
+FROM BOOK_TBL_06 b JOIN RENT_TBL_06 r ON(b.BOOK_NO = r.BOOK_NO)
+GROUP BY b.BOOK_NO, b.BOOK_NAME
+ORDER BY b.BOOK_NO
+</select>
+
+</mapper>
